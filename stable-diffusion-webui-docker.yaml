@@ -8,11 +8,9 @@ services:
     stdin_open: true
     tty: true
     restart: always
-    networks:
-      - hostnet
     volumes:
-      - ./models:/app/stable-diffusion-webui/models
-      - ./outputs:/app/stable-diffusion-webui/outputs
+      - models:/app/stable-diffusion-webui/models
+      - outputs:/app/stable-diffusion-webui/outputs
     deploy:
       resources:
         reservations:
@@ -21,7 +19,6 @@ services:
               count: all
               capabilities: [gpu]
 
-networks:
-  hostnet:
-    external: true
-    name: host
+volumes:
+  models:                            # named volume for persistence
+  outputs:                            # named volume for persistence
