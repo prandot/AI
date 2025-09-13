@@ -1,5 +1,5 @@
 # open-webui-nvidia-external-ollama-compose.yml
-version: "3.9"
+# version: "3.9"
 
 services:
   open-webui:
@@ -7,7 +7,7 @@ services:
     container_name: open-webui          # optional, keeps the name you used in `docker run`
     restart: always                     # matches `--restart always`
     environment:
-      - OLLAMA_BASE_URL=http://127.0.0.1:11434 # external ollama url
+      - OLLAMA_BASE_URL=http://172.24.83.126:11434 # external ollama url (ollama docker ip)
     ports:
       - "3000:8080"                     # host:container
     volumes:
