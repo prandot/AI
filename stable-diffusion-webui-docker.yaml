@@ -1,24 +1,33 @@
-# siutin/stable-diffusion-webui-docker:latest-cuda
-
+# https://hub.docker.com/r/universonic/stable-diffusion-webui
 services:
-  sdw:
-    image: siutin/stable-diffusion-webui-docker:latest-cuda
-    container_name: sdw
-    command: bash webui.sh --share
-    stdin_open: true
-    tty: true
-    restart: always
+  stable-diffusion-webui:
+    image: universonic/stable-diffusion-webui:minimal
+    command: --no-half --no-half-vae --precision full
+    runtime: nvidia
+    restart: unless-stopped
+    ports:
+      - "8080:8080/tcp"
     volumes:
-      - models:/app/stable-diffusion-webui/models
-      - outputs:/app/stable-diffusion-webui/outputs
+      - /my/own/datadir/inputs:/app/stable-diffusion-webui/inputs
+      - /my/own/datadir/textual_inversion_templates:/app/stable-diffusion-webui/textual_inversion_templates
+      - /my/own/datadir/embeddings:/app/stable-diffusion-webui/embeddings
+      - /my/own/datadir/extensions:/app/stable-diffusion-webui/extensions
+      - /my/own/datadir/models:/app/stable-diffusion-webui/models
+      - /my/own/datadir/localizations:/app/stable-diffusion-webui/localizations
+      - /my/own/datadir/outputs:/app/stable-diffusion-webui/outputs
+    cap_drop:
+      - ALL
+    cap_add:
+      - NET_BIND_SERVICE
     deploy:
+      mode: global
+      placement:
+        constraints:
+          - "node.labels.iface != extern"
+      restart_policy:
+        condition: unless-stopped
       resources:
         reservations:
           devices:
             - driver: nvidia
-              count: all
               capabilities: [gpu]
-
-volumes:
-  models:                            # named volume for persistence
-  outputs:                            # named volume for persistence
