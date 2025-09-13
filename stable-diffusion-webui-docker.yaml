@@ -1,12 +1,17 @@
 # https://hub.docker.com/r/universonic/stable-diffusion-webui
+# First time during deployment
+# portainer
+# root
+# chmod -R 777 embeddings extensions inputs localizations models outputs textual_inversion_templates
+
 services:
   stable-diffusion-webui:
     image: universonic/stable-diffusion-webui:minimal
-    command: --no-half --no-half-vae --precision full
+    command: --api --listen --no-half --no-half-vae --precision full
     runtime: nvidia
     restart: unless-stopped
     ports:
-      - "8080:8080/tcp"
+      - "3001:8080/tcp"
     volumes:
       - /my/own/datadir/inputs:/app/stable-diffusion-webui/inputs
       - /my/own/datadir/textual_inversion_templates:/app/stable-diffusion-webui/textual_inversion_templates
