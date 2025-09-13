@@ -1,0 +1,27 @@
+# siutin/stable-diffusion-webui-docker:latest-cuda
+
+services:
+  sdw:
+    image: siutin/stable-diffusion-webui-docker:latest-cuda
+    container_name: sdw
+    command: bash webui.sh --share
+    stdin_open: true
+    tty: true
+    restart: always
+    networks:
+      - hostnet
+    volumes:
+      - ./models:/app/stable-diffusion-webui/models
+      - ./outputs:/app/stable-diffusion-webui/outputs
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+
+networks:
+  hostnet:
+    external: true
+    name: host
