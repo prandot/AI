@@ -1,0 +1,29 @@
+# docker-ollama-compose.yml
+version: "3.9"          # use 3.x – it works with Compose v2+
+
+services:
+  ollama:
+    image: ollama/ollama
+    container_name: ollama
+    restart: unless-stopped   # optional – keeps the container alive after a crash
+
+    # GPU support (requires NVIDIA Container Toolkit)
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+
+    # expose the HTTP API on port 11434
+    ports:
+      - "11434:11434"
+
+    # persistent storage for Ollama data
+    volumes:
+      - ollama:/root/.ollama
+
+# named volume that Docker will create automatically
+volumes:
+  ollama:
