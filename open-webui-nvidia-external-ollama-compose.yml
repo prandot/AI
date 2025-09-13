@@ -1,0 +1,24 @@
+#open-webui-nvidia-external-ollama-compose.yml
+version: "3.9"
+
+services:
+  open-webui:
+    image: ghcr.io/open-webui/open-webui:cuda
+    container_name: open-webui          # optional, keeps the name you used in `docker run`
+    restart: always                     # matches `--restart always`
+    environment:
+      - OLLAMA_BASE_URL=http://127.0.0.1:11434 # external ollama url
+    ports:
+      - "3000:8080"                     # host:container
+    volumes:
+      - open-webui:/app/backend/data   # persistent storage
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]       # request all GPUs (requires Docker 19.03+)
+
+volumes:
+  open-webui:                            # named volume for persistence
