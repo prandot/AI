@@ -3,4 +3,5 @@
 # 1 - ollama (LLM repository)
 # 2 - open web ui (Web interface to work with AI models)
 # 3 - stable diffusion (Image LLM)
-# 4 - MCP Server ? Who knows in the future
+# 4 - N8N
+# 5 - MCP Server ? Who knows in the future
